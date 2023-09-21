@@ -8,10 +8,12 @@
 namespace OxidSolutionCatalysts\CliExportImport\Command;
 
 use OxidSolutionCatalysts\CliExportImport\Traits\CommonMethods;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use OxidSolutionCatalysts\CliExportImport\Core\Import;
 
 class DBImport extends Command
 {
@@ -45,7 +47,50 @@ class DBImport extends Command
         $this->input = $input;
         $this->output = $output;
 
+        $cliRunConfig = $this->getYamlConfig(
+            $this->getOptionYaml()
+        );
+
+        $this->import(
+            $this->getStringConfigParam('dbHost'),
+            $this->getStringConfigParam('dbName'),
+            $this->getStringConfigParam('dbUser'),
+            $this->getStringConfigParam('dbPwd'),
+            $this->getImportPath() . $cliRunConfig['dumpFileName'],
+            $this->getStringConfigParam('dbPort')
+        );
+
         return 0;
+    }
+
+    protected function import(
+        string $host,
+        string $dbName,
+        string $userName,
+        string $passWd,
+        string $dumpFile,
+        string $port = ''
+    ): void {
+        try {
+            new Import(
+                $dumpFile,
+                $userName,
+                $passWd,
+                $dbName,
+                $host,
+                $port
+            );
+
+            $this->output->writeLn(sprintf(
+                "<comment>Import completed from %s</comment>",
+                $dumpFile
+            ));
+        } catch (RuntimeException $e) {
+            $this->output->writeLn(sprintf(
+                "<comment>mysql-import-php error: `%s`</comment>",
+                $e->getMessage()
+            ));
+        }
     }
 
     protected function getImportPath(): string

@@ -10,6 +10,7 @@ namespace OxidSolutionCatalysts\CliExportImport\Command;
 use Exception;
 use Ifsnop\Mysqldump\Mysqldump;
 use OxidSolutionCatalysts\CliExportImport\Traits\CommonMethods;
+use OxidSolutionCatalysts\CliExportImport\Traits\PdoMethods;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DBExport extends Command
 {
     use CommonMethods;
+    use PdoMethods;
 
     protected static $defaultName = 'osc:db:export';
 
@@ -81,9 +83,7 @@ class DBExport extends Command
         string $port = ''
     ): void {
         try {
-            $pdoDsnConnection = 'mysql:host=' . $host
-                . ($port ? ';port=' . $port : '')
-                . ';dbname=' . $dbName;
+            $pdoDsnConnection = $this->getPdoDsnConnection($host, $dbName, $port);
 
             $dump = new Mysqldump(
                 $pdoDsnConnection,
