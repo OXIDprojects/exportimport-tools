@@ -9,9 +9,7 @@ namespace OxidSolutionCatalysts\CliExportImport\Command;
 
 use Exception;
 use Ifsnop\Mysqldump\Mysqldump;
-use OxidEsales\Eshop\Core\Registry;
 use OxidSolutionCatalysts\CliExportImport\Traits\CommonMethods;
-use OxidSolutionCatalysts\CliExportImport\Traits\YamlConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,20 +17,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DBExport extends Command
 {
-    use YamlConfig;
     use CommonMethods;
 
     protected static $defaultName = 'osc:db:export';
 
     protected function configure(): void
     {
-        $this->setDescription('Export Database to /export folder. Optional control via yaml-file in var/configuration/cliexportimport/')
-            ->addOption(
-                '--yaml',
-                '',
-                InputOption::VALUE_OPTIONAL,
-                'Name of yaml-file in in config-folder var/configuration/cliexportimport/'
-            );
+        $this->setDescription(
+            'Export Database to /export folder.
+             Optional control via yaml-file in var/configuration/cliexportimport/'
+        )->addOption(
+            '--yaml',
+            '',
+            InputOption::VALUE_OPTIONAL,
+            'Name of yaml-file in in config-folder var/configuration/cliexportimport/'
+        );
     }
 
     /**
@@ -47,20 +46,20 @@ class DBExport extends Command
     {
         $this->input = $input;
         $this->output = $output;
-        $config = Registry::getConfig();
+
         $cliRunConfig = $this->getYamlConfig(
             $this->getOptionYaml()
         );
 
         $this->export(
-            $config->getConfigParam('dbHost'),
-            $config->getConfigParam('dbName'),
-            $config->getConfigParam('dbUser'),
-            $config->getConfigParam('dbPwd'),
+            $this->getStringConfigParam('dbHost'),
+            $this->getStringConfigParam('dbName'),
+            $this->getStringConfigParam('dbUser'),
+            $this->getStringConfigParam('dbPwd'),
             $this->getExportPath() . $cliRunConfig['dumpFileName'],
             $cliRunConfig['onlyTables'],
             $cliRunConfig['anonymizeRowsInTables'],
-            $config->getConfigParam('dbPort')
+            $this->getStringConfigParam('dbPort')
         );
 
         return 0;
@@ -78,10 +77,9 @@ class DBExport extends Command
         string $passWd,
         string $dumpFile,
         array $onlyTables = [],
-        array $anonymizeRowsInTables = [],
+        array $anonymizeTables = [],
         string $port = ''
-    ): void
-    {
+    ): void {
         try {
             $pdoDsnConnection = 'mysql:host=' . $host
                 . ($port ? ';port=' . $port : '')
@@ -100,9 +98,9 @@ class DBExport extends Command
             );
 
             // anonymize if wanted
-            if (count($anonymizeRowsInTables)) {
-                $dump->setTransformTableRowHook(function ($tableName, array $row) use ($anonymizeRowsInTables) {
-                    foreach ($anonymizeRowsInTables as $anonymizeTable => $anonymizeRows) {
+            if (count($anonymizeTables)) {
+                $dump->setTransformTableRowHook(function ($tableName, array $row) use ($anonymizeTables) {
+                    foreach ($anonymizeTables as $anonymizeTable => $anonymizeRows) {
                         if ($tableName === $anonymizeTable) {
                             foreach ($anonymizeRows as $anonymizeRow) {
                                 $row[$anonymizeRow] = (string) random_int(1000000, 9999999);
@@ -119,7 +117,6 @@ class DBExport extends Command
                 "<comment>Dump completed in %s</comment>",
                 $dumpFile
             ));
-
         } catch (Exception $e) {
             $this->output->writeLn(sprintf(
                 "<comment>mysqldump-php error: `%s`</comment>",

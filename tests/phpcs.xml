@@ -5,7 +5,6 @@
     <!-- Paths to check -->
     <file>../src/</file>
     <file>./</file>
-    <file>../translations</file>
 
     <!-- display progress -->
     <arg value="p"/>
