@@ -7,6 +7,7 @@
 
 namespace OxidSolutionCatalysts\CliExportImport\Traits;
 
+use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 * trait CommandLine
 *
 */
-trait CommandLine
+trait CommonMethods
 {
     /**
      * OutputInterface instance
@@ -25,6 +26,21 @@ trait CommandLine
      * InputInterface instance
      */
     protected ?InputInterface $input = null;
+
+    protected function getRealPath($path): string
+    {
+        $facts = new Facts();
+        $base = realpath($facts->getShopRootPath()) . DIRECTORY_SEPARATOR . $path;
+        $this->checkPath($base);
+        return $base;
+    }
+
+    protected function checkPath($path): void
+    {
+        if ((file_exists($path) === false) && !mkdir($path, 0755, true) && !is_dir($path)) {
+            $this->output->writeLn(sprintf('<comment>Directory "%s" was not created</comment>', $path));
+        }
+    }
 
     protected function getOptionYaml(): string
     {

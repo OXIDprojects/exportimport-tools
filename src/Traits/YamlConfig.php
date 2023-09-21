@@ -16,20 +16,12 @@ use Symfony\Component\Yaml\Yaml;
 */
 trait YamlConfig
 {
+    use CommonMethods;
+
     protected function getYamlConfigPath(): string
     {
         $DS = DIRECTORY_SEPARATOR;
-        $facts = new Facts();
-        $base = realpath($facts->getShopRootPath()) . $DS . "var" . $DS . "configuration" . $DS. "cliexportimport" . $DS;
-        $this->checkPath($base);
-        return $base;
-    }
-
-    protected function checkPath($path): void
-    {
-        if ((file_exists($path) === false) && !mkdir($path, 0755, true) && !is_dir($path)) {
-            $this->output->writeLn(sprintf('<comment>Directory "%s" was not created</comment>', $path));
-        }
+        return $this->getRealPath("var" . $DS . "configuration" . $DS. "cliexportimport" . $DS);
     }
 
     protected function getYamlConfig(string $yamlFileName = ''): array
@@ -43,7 +35,10 @@ trait YamlConfig
             $yaml = $this->getYamlStringFromFile($yamlFile);
             $cliRunConfig = Yaml::parse($yaml);
         } else {
-            $this->output->writeLn("<comment>No config passed, use default.</comment>");
+            $this->output->writeLn(sprintf(
+                "<comment>No config passed, use default. (create a %s as example)</comment>",
+                $this->setExampleYaml()
+            ));
         }
 
         if ($yamlFile && !is_array($cliRunConfig)) {
@@ -54,7 +49,8 @@ trait YamlConfig
             ));
         }
 
-        return $cliRunConfig;
+        // fix missing config-elements and return
+        return array_merge($this->getConfigDefault(), $cliRunConfig);
     }
 
     protected function getYamlConfigFile(string $yamlFileName = ''): string
@@ -66,5 +62,43 @@ trait YamlConfig
     protected function getYamlStringFromFile(string $yamlFile): string
     {
         return $yamlFile ? file_get_contents($yamlFile) : '';
+    }
+
+    protected function setExampleYaml(): string
+    {
+        $yamlFile = 'example.yaml';
+        $this->setDataToYamlFile(
+            $this->getYamlConfigPath() . $yamlFile,
+            $this->getConfigDefault()
+        );
+        return $yamlFile;
+    }
+
+    protected function setDataToYamlFile(string $yamlFile, array $data = []): void
+    {
+        if ($yamlFile && $sYaml = $this->getYamlFromArray($data)) {
+            file_put_contents(
+                $yamlFile,
+                $sYaml
+            );
+        }
+    }
+
+    protected function getYamlFromArray(array $data = []): string
+    {
+        return Yaml::dump($data, 5, 2);
+    }
+
+    protected function getConfigDefault(): array
+    {
+        return [
+            'dumpFileName' => 'dump.sql',
+            'onlyTables' => [],
+            'anonymizeRowsInTables' => [
+                'tablename' => [
+                    'colname1', 'colname2'
+                ]
+            ]
+        ];
     }
 }
