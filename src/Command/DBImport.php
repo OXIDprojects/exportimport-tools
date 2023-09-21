@@ -7,7 +7,7 @@
 
 namespace OxidSolutionCatalysts\CliExportImport\Command;
 
-use OxidSolutionCatalysts\CliExportImport\Traits\CommandLine;
+use OxidSolutionCatalysts\CliExportImport\Traits\CommonMethods;
 use OxidSolutionCatalysts\CliExportImport\Traits\YamlConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class DBImport extends Command
 {
     use YamlConfig;
-    use CommandLine;
+    use CommonMethods;
 
     protected static $defaultName = 'osc:db:import';
 
@@ -46,5 +46,10 @@ class DBImport extends Command
         $this->output = $output;
 
         return 0;
+    }
+
+    protected function getImportPath(): string
+    {
+        return $this->getRealPath("import" . DIRECTORY_SEPARATOR);
     }
 }
