@@ -37,8 +37,15 @@ trait CommonMethods
 
     protected function checkPath($path): void
     {
-        if ((file_exists($path) === false) && !mkdir($path, 0755, true) && !is_dir($path)) {
-            $this->output->writeLn(sprintf('<comment>Directory "%s" was not created</comment>', $path));
+        if (
+            (file_exists($path) === false) &&
+            !mkdir($path, 0755, true) &&
+            !is_dir($path)
+        ) {
+            $this->output->writeLn(sprintf(
+                '<comment>Directory "%s" was not created</comment>',
+                $path
+            ));
         }
     }
 
@@ -46,7 +53,7 @@ trait CommonMethods
     {
         $sEnvironment = '';
         if ($this->input->hasOption('yaml')) {
-            $sEnvironment = $this->input->getOption('yaml');
+            $sEnvironment = (string)$this->input->getOption('yaml');
         }
         return $sEnvironment;
     }

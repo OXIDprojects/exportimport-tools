@@ -29,16 +29,19 @@ trait YamlConfig
         $cliRunConfig = [];
 
         $yamlFile = $this->getYamlConfigFile($yamlFileName);
-
         if ($yamlFile) {
             // now try to read YAML
+            $this->output->writeLn(sprintf(
+                "<comment>Use config: `%s`</comment>",
+                realpath($yamlFile)
+            ));
             $yaml = $this->getYamlStringFromFile($yamlFile);
             $cliRunConfig = Yaml::parse($yaml);
         } else {
-            $this->output->writeLn(sprintf(
-                "<comment>No config passed, use default. (create a %s as example)</comment>",
-                $this->setExampleYaml()
-            ));
+            $this->output->writeLn(
+                "<comment>No configuration passed, default used.</comment>",
+            );
+            $this->setExampleYaml();
         }
 
         if ($yamlFile && !is_array($cliRunConfig)) {
@@ -56,7 +59,7 @@ trait YamlConfig
     protected function getYamlConfigFile(string $yamlFileName = ''): string
     {
         $yamlFile = $this->getYamlConfigPath() .$yamlFileName;
-        return file_exists($yamlFile) ? $yamlFile : '';
+        return ($yamlFileName && file_exists($yamlFile)) ? $yamlFile : '';
     }
 
     protected function getYamlStringFromFile(string $yamlFile): string
@@ -67,10 +70,18 @@ trait YamlConfig
     protected function setExampleYaml(): string
     {
         $yamlFile = 'example.yaml';
-        $this->setDataToYamlFile(
-            $this->getYamlConfigPath() . $yamlFile,
-            $this->getConfigDefault()
-        );
+        if (!$this->getYamlConfigFile($yamlFile)) {
+            $yamlFilePath = $this->getYamlConfigPath() . $yamlFile;
+            $this->setDataToYamlFile(
+                $yamlFilePath,
+                $this->getConfigDefault()
+            );
+            $this->output->writeLn(sprintf(
+                "<comment>Create a %s as example. You can use this file with parameter --yaml=%s</comment>",
+                realpath($yamlFilePath),
+                $yamlFile
+            ));
+        }
         return $yamlFile;
     }
 
@@ -93,10 +104,11 @@ trait YamlConfig
     {
         return [
             'dumpFileName' => 'dump.sql',
-            'onlyTables' => [],
+            'onlyTables' => [
+            ],
             'anonymizeRowsInTables' => [
-                'tablename' => [
-                    'colname1', 'colname2'
+                'oxuser' => [
+                    'oxfname', 'oxlname'
                 ]
             ]
         ];

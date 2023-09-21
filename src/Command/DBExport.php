@@ -48,7 +48,6 @@ class DBExport extends Command
         $this->input = $input;
         $this->output = $output;
         $config = Registry::getConfig();
-
         $cliRunConfig = $this->getYamlConfig(
             $this->getOptionYaml()
         );
@@ -115,6 +114,11 @@ class DBExport extends Command
             }
 
             $dump->start($dumpFile);
+
+            $this->output->writeLn(sprintf(
+                "<comment>Dump completed in %s</comment>",
+                $dumpFile
+            ));
 
         } catch (Exception $e) {
             $this->output->writeLn(sprintf(
