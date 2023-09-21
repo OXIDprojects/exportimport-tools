@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    public: true
+
+  osc.db.export:
+    class: OxidSolutionCatalysts\CliExportImport\Command\DBExport
+    tags:
+      - { name: 'console.command', command: 'osc:db:export' }
+
+  osc.db.import:
+    class: OxidSolutionCatalysts\CliExportImport\Command\DBImport
+    tags:
+      - { name: 'console.command', command: 'osc:db:import' }

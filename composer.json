@@ -21,6 +21,7 @@
         }
     },
     "require": {
+        "ifsnop/mysqldump-php": "v2.*"
     },
     "require-dev": {
         "phpmd/phpmd": "^2.11",
