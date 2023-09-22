@@ -194,6 +194,9 @@ trait CommonMethods
             $this->confKeyAnonymize => [
                 'oxuser' => [
                     'oxfname', 'oxlname'
+                ],
+                'oxorder' => [
+                    'oxbillfname', 'oxbilllname', 'oxdelfname', 'oxdellname'
                 ]
             ]
         ];
