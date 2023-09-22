@@ -1,5 +1,5 @@
 {
-    "name": "oxid-solution-catalysts/cliexportimport-module",
+    "name": "oxid-solution-catalysts/cliexportimport",
     "description": "OXID eSales extension for oe-console to im- and export the database",
     "type": "oxideshop-component",
     "keywords": ["oxid", "modules", "eShop", "oe-console", "export", "import"],
