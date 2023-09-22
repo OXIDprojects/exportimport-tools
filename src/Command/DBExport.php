@@ -58,9 +58,9 @@ class DBExport extends Command
             $this->getStringConfigParam('dbName'),
             $this->getStringConfigParam('dbUser'),
             $this->getStringConfigParam('dbPwd'),
-            $this->getExportPath() . $cliRunConfig['dumpFileName'],
-            $cliRunConfig['onlyTables'],
-            $cliRunConfig['anonymizeRowsInTables'],
+            $this->getExportPath() . $cliRunConfig[$this->confKeyDump],
+            $cliRunConfig[$this->confKeyTable],
+            $cliRunConfig[$this->confKeyAnonymize],
             $this->getStringConfigParam('dbPort')
         );
 
@@ -69,7 +69,7 @@ class DBExport extends Command
 
     protected function getExportPath(): string
     {
-        return $this->getRealPath("export" . DIRECTORY_SEPARATOR);
+        return $this->getRealPath("export" . DIRECTORY_SEPARATOR, true);
     }
 
     protected function export(

@@ -126,8 +126,8 @@ class Import
             }
         } catch (Exception $e) {
             throw new RuntimeException(sprintf(
-                "Error importing: %s",
-                $this->dumpFile
+                "Error during SQL: %s",
+                $tmpLine
             ));
         }
     }

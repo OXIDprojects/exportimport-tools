@@ -19,6 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 */
 trait CommonMethods
 {
+    protected string $confKeyDump = 'dumpFileName';
+    protected string $confKeyTable = 'onlyTables';
+    protected string $confKeyAnonymize = 'anonymizeRowsInTables';
     /**
      * OutputInterface instance
      */
@@ -29,10 +32,11 @@ trait CommonMethods
      */
     protected InputInterface $input;
 
-    protected function getRealPath(string $path): string
+    protected function getRealPath(string $path, bool $sourcePath = false): string
     {
         $facts = new Facts();
-        $base = realpath($facts->getShopRootPath()) . DIRECTORY_SEPARATOR . $path;
+        $root = $sourcePath ? $facts->getSourcePath() : $facts->getShopRootPath();
+        $base = realpath($root) . DIRECTORY_SEPARATOR . $path;
         $this->checkPath($base);
         return $base;
     }
@@ -111,8 +115,19 @@ trait CommonMethods
             ));
         }
 
-        // fix missing config-elements and return
-        return array_merge($this->getConfigDefault(), $cliRunConfig);
+        // bulletproof config
+        $defaultConfig = $this->getConfigDefault();
+        $cliRunConfig[$this->confKeyDump] = is_string($cliRunConfig[$this->confKeyDump]) && !empty($cliRunConfig[$this->confKeyDump]) ?
+            $cliRunConfig[$this->confKeyDump] :
+            $defaultConfig[$this->confKeyDump];
+        $cliRunConfig[$this->confKeyTable] = is_array($cliRunConfig[$this->confKeyTable]) ?
+            $cliRunConfig[$this->confKeyTable] :
+            [];
+        $cliRunConfig[$this->confKeyAnonymize] = is_array($cliRunConfig[$this->confKeyAnonymize]) ?
+            $cliRunConfig[$this->confKeyAnonymize] :
+            [];
+
+        return $cliRunConfig;
     }
 
     protected function getYamlConfigFile(string $yamlFileName = ''): string
@@ -171,10 +186,9 @@ trait CommonMethods
     protected function getConfigDefault(): array
     {
         return [
-            'dumpFileName' => 'dump.sql',
-            'onlyTables' => [
-            ],
-            'anonymizeRowsInTables' => [
+            $this->confKeyDump => 'dump.sql',
+            $this->confKeyTable => [],
+            $this->confKeyAnonymize => [
                 'oxuser' => [
                     'oxfname', 'oxlname'
                 ]

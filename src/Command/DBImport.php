@@ -56,7 +56,7 @@ class DBImport extends Command
             $this->getStringConfigParam('dbName'),
             $this->getStringConfigParam('dbUser'),
             $this->getStringConfigParam('dbPwd'),
-            $this->getImportPath() . $cliRunConfig['dumpFileName'],
+            $this->getImportPath() . $cliRunConfig[$this->confKeyDump],
             $this->getStringConfigParam('dbPort')
         );
 
@@ -95,6 +95,6 @@ class DBImport extends Command
 
     protected function getImportPath(): string
     {
-        return $this->getRealPath("import" . DIRECTORY_SEPARATOR);
+        return $this->getRealPath("import" . DIRECTORY_SEPARATOR, true);
     }
 }
