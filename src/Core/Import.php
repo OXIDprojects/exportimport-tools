@@ -1,8 +1,8 @@
 <?php
 
-namespace OxidSolutionCatalysts\CliExportImport\Core;
+namespace OxidSolutionCatalysts\ExportImportTools\Core;
 
-use OxidSolutionCatalysts\CliExportImport\Traits\PdoMethods;
+use OxidSolutionCatalysts\ExportImportTools\Traits\PdoMethods;
 use PDO;
 use PDOException;
 use Exception;

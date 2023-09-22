@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidSolutionCatalysts\CliExportImport\Traits;
+namespace OxidSolutionCatalysts\ExportImportTools\Traits;
 
 use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Yaml\Yaml;

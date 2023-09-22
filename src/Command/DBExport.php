@@ -5,12 +5,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidSolutionCatalysts\CliExportImport\Command;
+namespace OxidSolutionCatalysts\ExportImportTools\Command;
 
 use Exception;
 use Ifsnop\Mysqldump\Mysqldump;
-use OxidSolutionCatalysts\CliExportImport\Traits\CommonMethods;
-use OxidSolutionCatalysts\CliExportImport\Traits\PdoMethods;
+use OxidSolutionCatalysts\ExportImportTools\Traits\CommonMethods;
+use OxidSolutionCatalysts\ExportImportTools\Traits\PdoMethods;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,12 +27,12 @@ class DBExport extends Command
     {
         $this->setDescription(
             'Export Database to /export folder.
-             Optional control via yaml-file in var/configuration/cliexportimport/'
+             Optional control via yaml-file in var/configuration/exportimport-tools/'
         )->addOption(
             '--yaml',
             '',
             InputOption::VALUE_OPTIONAL,
-            'Name of yaml-file in in config-folder var/configuration/cliexportimport/'
+            'Name of yaml-file in in config-folder var/configuration/exportimport-tools/'
         );
     }
 

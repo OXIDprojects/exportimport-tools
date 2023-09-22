@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidSolutionCatalysts\CliExportImport\Traits;
+namespace OxidSolutionCatalysts\ExportImportTools\Traits;
 
 use OxidEsales\Eshop\Core\Registry;
 use Symfony\Component\Yaml\Yaml;
@@ -79,7 +79,7 @@ trait CommonMethods
         return $this->getRealPath(
             "var" . DIRECTORY_SEPARATOR .
             "configuration" . DIRECTORY_SEPARATOR .
-            "cliexportimport" . DIRECTORY_SEPARATOR,
+            "exportimport-tools" . DIRECTORY_SEPARATOR,
             false
         );
     }

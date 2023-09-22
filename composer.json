@@ -1,5 +1,5 @@
 {
-    "name": "oxid-solution-catalysts/cliexportimport",
+    "name": "oxid-solution-catalysts/exportimport-tools",
     "description": "OXID eSales extension for oe-console to im- and export the database",
     "type": "oxideshop-component",
     "keywords": ["oxid", "modules", "eShop", "oe-console", "export", "import"],
@@ -13,7 +13,7 @@
     },
     "extra": {
         "oxideshop": {
-            "target-directory": "osc/cliexportimport",
+            "target-directory": "osc/exportimport-tools",
             "blacklist-filter": [
                 "resources/**/*",
                 "tests/**/*"
@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "OxidSolutionCatalysts\\CliExportImport\\": "src/"
+            "OxidSolutionCatalysts\\ExportImportTools\\": "src/"
         }
     },
     "minimum-stability": "dev",

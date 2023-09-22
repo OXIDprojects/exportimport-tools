@@ -14,14 +14,14 @@ this file
 
 Installation via composer
 ```
-composer require oxid-solution-catalysts/cliexportimport ^1.0.0
+composer require oxid-solution-catalysts/exportimport-tools ^1.0.0
 ```
 
 ## Usage
 
 ### Configuration
 
-Use a configuration YAML e.g. dump.yaml and save it here: var/configuration/cliexportimport/dump.yaml
+Use a configuration YAML e.g. dump.yaml and save it here: var/configuration/exportimport-tools/dump.yaml
 
 Contents of the configuration YAML
 ```
@@ -49,7 +49,7 @@ vendor/bin/oe-console osc:db:export --yaml=dump.yaml
 ```
 The dump is created in the /source/export/ directory. The name of the dump is the defined "dumpFileName" from the Configuration YAML.
 
-The --yaml option contains the name of the configuration file, which is located in the directory: var/configuration/cliexportimport/ 
+The --yaml option contains the name of the configuration file, which is located in the directory: var/configuration/exportimport-tools/ 
 
 ### Import Data
 ```
@@ -57,7 +57,7 @@ vendor/bin/oe-console osc:db:import --yaml=dump.yaml
 ```
 The dump is read from the /source/import/ directory. The name of the dump is the defined "dumpFileName" from the Configuration YAML
 
-The --yaml option contains the name of the configuration file, which is located in the directory: var/configuration/cliexportimport/
+The --yaml option contains the name of the configuration file, which is located in the directory: var/configuration/exportimport-tools/
 
 ## Running tests
 
@@ -65,17 +65,17 @@ The --yaml option contains the name of the configuration file, which is located 
 
 Code Style
 ```
-composer phpcs --working-dir=extensions/osc/cliexportimport
+composer phpcs --working-dir=extensions/osc/exportimport-tools
 ```
 
 PHPmd
 ```
-composer phpmd --working-dir=extensions/osc/cliexportimport
+composer phpmd --working-dir=extensions/osc/exportimport-tools
 ```
 
 PHPStan
 ```
-composer phpstan --working-dir=extensions/osc/cliexportimport
+composer phpstan --working-dir=extensions/osc/exportimport-tools
 ```
 
 

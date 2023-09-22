@@ -5,15 +5,15 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidSolutionCatalysts\CliExportImport\Command;
+namespace OxidSolutionCatalysts\ExportImportTools\Command;
 
-use OxidSolutionCatalysts\CliExportImport\Traits\CommonMethods;
+use OxidSolutionCatalysts\ExportImportTools\Traits\CommonMethods;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use OxidSolutionCatalysts\CliExportImport\Core\Import;
+use OxidSolutionCatalysts\ExportImportTools\Core\Import;
 
 class DBImport extends Command
 {
@@ -25,12 +25,12 @@ class DBImport extends Command
     {
         $this->setDescription(
             'Import Database from /import folder.
-             Optional control via yaml-file in var/configuration/cliexportimport/'
+             Optional control via yaml-file in var/configuration/exportimport-tools/'
         )->addOption(
             '--yaml',
             '',
             InputOption::VALUE_OPTIONAL,
-            'Name of yaml-file in in config-folder var/configuration/cliexportimport/'
+            'Name of yaml-file in in config-folder var/configuration/exportimport-tools/'
         );
     }
 
