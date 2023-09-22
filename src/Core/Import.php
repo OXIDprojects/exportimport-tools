@@ -90,6 +90,9 @@ class Import
      */
     private function importFile(): void
     {
+        // Temporary variable, used to store current query
+        $tmpLine = '';
+
         try {
             if (!file_exists($this->dumpFile)) {
                 throw new RuntimeException(sprintf(
@@ -101,9 +104,6 @@ class Import
             $fileHandle = fopen($this->dumpFile, 'rb');
 
             if ($fileHandle) {
-                // Temporary variable, used to store current query
-                $tmpLine = '';
-
                 // Loop through each line
                 while (($line = fgets($fileHandle)) !== false) {
                     // Skip it if it's a comment

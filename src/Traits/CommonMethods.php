@@ -32,7 +32,7 @@ trait CommonMethods
      */
     protected InputInterface $input;
 
-    protected function getRealPath(string $path, bool $sourcePath = false): string
+    protected function getRealPath(string $path, bool $sourcePath): string
     {
         $facts = new Facts();
         $root = $sourcePath ? $facts->getSourcePath() : $facts->getShopRootPath();
@@ -79,7 +79,8 @@ trait CommonMethods
         return $this->getRealPath(
             "var" . DIRECTORY_SEPARATOR .
             "configuration" . DIRECTORY_SEPARATOR .
-            "cliexportimport" . DIRECTORY_SEPARATOR
+            "cliexportimport" . DIRECTORY_SEPARATOR,
+            false
         );
     }
 
@@ -117,7 +118,9 @@ trait CommonMethods
 
         // bulletproof config
         $defaultConfig = $this->getConfigDefault();
-        $cliRunConfig[$this->confKeyDump] = is_string($cliRunConfig[$this->confKeyDump]) && !empty($cliRunConfig[$this->confKeyDump]) ?
+        $cliRunConfig[$this->confKeyDump] =
+            is_string($cliRunConfig[$this->confKeyDump]) &&
+            !empty($cliRunConfig[$this->confKeyDump]) ?
             $cliRunConfig[$this->confKeyDump] :
             $defaultConfig[$this->confKeyDump];
         $cliRunConfig[$this->confKeyTable] = is_array($cliRunConfig[$this->confKeyTable]) ?
