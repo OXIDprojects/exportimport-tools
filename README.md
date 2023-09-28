@@ -8,7 +8,11 @@ this file
 
 ## Branch Compatibility
 
-* b-6.5.x branch is compatible with OXID eShop compilation 6.3, 6.4, 6.5
+* b-6.5.x branch is compatible with OXID eShop compilation 6.2, 6.3, 6.4, 6.5
+
+## DEV-System
+
+* please use for developing an OXID eShop compilation 6.5
 
 ## Installation
 
